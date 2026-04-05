@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Analyzer — Tall Town Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+:root {
+  --bg: #0B0F1A;
+  --surface: #141928;
+  --surface2: #1B2236;
+  --border: #242D45;
+  --border-light: #2E3A55;
+  --primary: #4D7EFA;
+  --primary-dark: #3A6AE8;
+  --primary-glow: rgba(77,126,250,0.15);
+  --accent: #F4A118;
+  --text: #EDF2FB;
+  --text-muted: #697B9A;
+  --success: #22C55E;
+  --warning: #F4A118;
+  --error: #EF4444;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --max-w: 860px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.header-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.3px;
+}
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: inline-block;
+}
+.logo-sub {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-left: 1px solid var(--border-light);
+  padding-left: 10px;
+}
+.powered {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.powered-dot {
+  width: 6px; height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Main layout ── */
+.main {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ── Hero ── */
+.hero {
+  margin-bottom: 36px;
+}
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.8px;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: var(--primary); }
+.hero p {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 520px;
+}
+
+/* ── Form card ── */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.form-group.full { grid-column: 1 / -1; }
+
+label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.required-star { color: var(--primary); font-size: 14px; }
+.optional-tag {
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+input[type="text"], input[type="url"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 11px 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  outline: none;
+}
+input[type="text"]:focus, input[type="url"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+input::placeholder { color: var(--text-muted); opacity: 0.7; }
+
+.field-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: -3px;
+}
+
+.analyze-btn {
+  width: 100%;
+  margin-top: 20px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.analyze-btn:hover:not(:disabled) { background: var(--primary-dark); }
+.analyze-btn:active:not(:disabled) { transform: scale(0.99); }
+.analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Loading ── */
+.loading-state {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 28px;
+}
+.loading-state.visible { display: block; }
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-label {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.loading-steps {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.step-item {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+.step-item.active { opacity: 1; color: var(--primary); }
+.step-item.done { opacity: 0.7; color: var(--success); }
+.step-icon { width: 14px; height: 14px; }
+
+/* ── Error ── */
+.error-box {
+  display: none;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  color: #FCA5A5;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.error-box.visible { display: block; }
+
+/* ── Report area ── */
+.report-area {
+  display: none;
+}
+.report-area.visible { display: block; }
+
+.report-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.report-title {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.report-actions {
+  display: flex;
+  gap: 10px;
+}
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+}
+.btn-copy {
+  background: var(--surface2);
+  color: var(--text);
+}
+.btn-copy:hover { border-color: var(--primary); color: var(--primary); }
+.btn-copy.copied { color: var(--success); border-color: var(--success); }
+.btn-pdf {
+  background: var(--accent);
+  color: #1a0f00;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.btn-pdf:hover { background: #E09210; border-color: #E09210; }
+
+.report-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+}
+
+/* ── Markdown styles ── */
+.report-content h1 {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+.report-content h2 {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 36px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.2px;
+}
+.report-content h3 {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 22px;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.report-content h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+.report-content p {
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.7;
+  font-size: 14px;
+}
+.report-content ul, .report-content ol {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+.report-content li {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 5px;
+  line-height: 1.6;
+}
+.report-content strong { color: var(--text); font-weight: 600; }
+.report-content em { color: var(--text-muted); }
+.report-content code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--accent);
+}
+.report-content pre {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+.report-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text);
+}
+.report-content blockquote {
+  border-left: 3px solid var(--primary);
+  padding: 10px 16px;
+  margin: 16px 0;
+  background: var(--primary-glow);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.report-content blockquote p { color: var(--text); margin: 0; }
+.report-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+.report-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.report-content th {
+  background: var(--surface2);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.report-content td {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.report-content tr:nth-child(even) td { background: rgba(27,34,54,0.4); }
+
+/* Status emoji styling */
+.report-content p:has-text, .report-content li {
+  line-height: 1.7;
+}
+
+/* ── Bottom copy/pdf bar ── */
+.report-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.footer-btn {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+}
+.footer-copy {
+  background: var(--surface2);
+  color: var(--text);
+}
+.footer-copy:hover { border-color: var(--primary); color: var(--primary); }
+.footer-copy.copied { color: var(--success); border-color: var(--success); background: rgba(34,197,94,0.07); }
+.footer-pdf {
+  background: var(--accent);
+  color: #1a0f00;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.footer-pdf:hover { background: #E09210; border-color: #E09210; }
+
+/* ── Print styles ── */
+@media print {
+  body { background: #fff; color: #0F172A; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .app-header, .form-card, .loading-state, .report-meta, .report-footer, .report-actions { display: none !important; }
+  .main { max-width: 100%; padding: 0; }
+  .report-area { display: block !important; }
+  .report-card {
+    background: #fff;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+  }
+  .report-content h1 { color: #0F172A; font-size: 22px; }
+  .report-content h2 { color: #0F172A; font-size: 16px; border-bottom: 1px solid #E2E8F0; }
+  .report-content h3 { color: #1E40AF; font-size: 13px; }
+  .report-content p, .report-content li { color: #0F172A; font-size: 13px; }
+  .report-content td, .report-content th { border: 1px solid #E2E8F0; color: #0F172A; }
+  .report-content th { background: #F8FAFC; color: #475569; }
+  .report-content tr:nth-child(even) td { background: #F8FAFC; }
+  .report-content code { background: #F1F5F9; color: #7C3AED; border: 1px solid #E2E8F0; }
+  .report-content blockquote { background: #EFF6FF; border-left-color: #3B82F6; }
+  .report-content hr { border-top: 1px solid #E2E8F0; }
+  .hero { display: none; }
+  @page { margin: 20mm 18mm; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  .hero h1 { font-size: 26px; }
+  .report-card { padding: 22px 18px; }
+  .report-actions { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      Website Analyzer
+      <span class="logo-sub">Tall Town Design</span>
+    </div>
+    <div class="powered">
+      <span class="powered-dot"></span>
+      Powered by Claude AI
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="hero">
+    <h1>Full <span>SEO + Conversion</span><br>Website Analysis</h1>
+    <p>Enter a page URL and focus keyword to generate a comprehensive audit covering SEO, content quality, and conversion capability.</p>
+  </div>
+
+  <div class="form-card">
+    <div class="form-grid">
+
+      <div class="form-group full">
+        <label>
+          Page URL
+          <span class="required-star">*</span>
+        </label>
+        <input type="url" id="url-input" placeholder="https://example.com/services/roofing" autocomplete="off" />
+        <span class="field-hint">Full URL of the specific page to analyze — not just the homepage.</span>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Focus Keyword
+          <span class="required-star">*</span>
+        </label>
+        <input type="text" id="keyword-input" placeholder="roofing company Phoenix AZ" />
+        <span class="field-hint">The primary search term this page should rank for.</span>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Geographic Region
+          <span class="optional-tag">optional</span>
+        </label>
+        <input type="text" id="region-input" placeholder="Phoenix, AZ" />
+        <span class="field-hint">City, metro, or state the business serves. Enables local SEO audit.</span>
+      </div>
+
+    </div>
+
+    <div class="error-box" id="error-box"></div>
+
+    <button class="analyze-btn" id="analyze-btn" onclick="runAnalysis()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Analyze Website
+    </button>
+  </div>
+
+  <div class="loading-state" id="loading-state">
+    <div class="spinner"></div>
+    <div class="loading-label">Analyzing your page — this takes 20–40 seconds</div>
+    <div class="loading-steps">
+      <div class="step-item" id="step1">
+        <svg class="step-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3l2 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Fetching and reading page content
+      </div>
+      <div class="step-item" id="step2">
+        <svg class="step-icon" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2v10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Searching competitor landscape
+      </div>
+      <div class="step-item" id="step3">
+        <svg class="step-icon" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7h4M5 5h4M5 9h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Generating full audit report
+      </div>
+    </div>
+  </div>
+
+  <div class="report-area" id="report-area">
+    <div class="report-meta">
+      <span class="report-title">Analysis Report</span>
+      <div class="report-actions">
+        <button class="action-btn btn-copy" id="copy-btn-top" onclick="copyReport(this)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 10V3a1 1 0 011-1h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Copy
+        </button>
+        <button class="action-btn btn-pdf" onclick="downloadPDF()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2h6l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M9 2v3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          PDF
+        </button>
+      </div>
+    </div>
+
+    <div class="report-card">
+      <div class="report-content" id="report-content"></div>
+
+      <div class="report-footer">
+        <button class="footer-btn footer-copy" id="copy-btn-bottom" onclick="copyReport(this)">
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 10V3a1 1 0 011-1h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Copy Report to Clipboard
+        </button>
+        <button class="footer-btn footer-pdf" onclick="downloadPDF()">
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><path d="M3 2h6l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M9 2v3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8h4M5 10h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Download as PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+let rawMarkdown = '';
+
+const SYSTEM_PROMPT = `You are an expert SEO strategist, conversion rate optimizer, and content analyst embedded in a professional website analysis tool. When given a website URL, focus keyword, and optional geographic region, you fetch and analyze the page using web_search, then produce a structured Markdown audit report.
+
+ALWAYS use web_search to:
+1. Search for the exact URL to retrieve its content, title, meta tags, and headings
+2. Search for the focus keyword (plus region if provided) to find competitors
+
+Use EXACTLY this report structure — every section is required:
+
+# Website Analysis Report
+**URL:** [URL]
+**Focus Keyword:** [keyword]
+**Geographic Region:** [region, or "Not specified"]
+**Date:** [today's date]
+**Overall Grade:** [A / B / C / D / F — one-line summary]
+
+---
+
+## 📊 Executive Summary
+2–4 sentence overview of strongest points and most urgent issues. Include the overall opportunity.
+
+---
+
+## 🔍 SEO Analysis
+
+### Title Tag
+- Current: [exact text or "Not found"]
+- Contains focus keyword? [Yes/No] — position: [beginning/middle/end/absent]
+- Character count: [N] (ideal: 50–60 chars)
+- Assessment: [✅ Strong / ⚠️ Needs Work / ❌ Critical Issue] — brief evaluation
+- Recommendation: [rewritten suggestion if needed]
+
+### Meta Description
+- Current: [text or "Not found"]
+- Contains focus keyword? [Yes/No]
+- Character count: [N] (ideal: 150–160 chars)
+- Includes CTA? [Yes/No]
+- Assessment: [✅/⚠️/❌] — brief evaluation
+- Recommendation: [rewrite if needed]
+
+### Heading Structure (H1–H4)
+- H1: [text or "Missing"]
+- H2s: [list up to 5]
+- H3s: [brief note]
+- Focus keyword in H1? [Yes/No]
+- Assessment: [✅/⚠️/❌] — note on hierarchy and keyword usage
+- Recommendation: [specific improvements]
+
+### Keyword Usage
+- Focus keyword density: [high/medium/low/absent]
+- Keyword in first 100 words? [Yes/No]
+- LSI/related terms present? [list or "None detected"]
+- Keyword stuffing risk? [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [how to improve natural integration]
+
+### URL Structure
+- URL: [url]
+- Contains keyword? [Yes/No]
+- Clean and readable? [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [if applicable]
+
+### Internal Linking
+- Internal links detected: [count or "Unable to determine"]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [specific link suggestions]
+
+### Technical SEO Signals
+- Schema/structured data: [Detected/Not detected]
+- Image alt text: [Present/Missing/Unable to assess]
+- Mobile-friendliness: [any signals]
+- HTTPS: [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [technical priorities]
+
+### 📍 Local SEO Signals
+*If no region was given, note that and offer brief general assessment.*
+- Geographic keyword in title? [Yes/No]
+- Geographic keyword in H1? [Yes/No]
+- Geographic keyword in body? [Yes/No — prominent/buried/absent]
+- NAP (Name, Address, Phone) on page? [Yes/Partial/No]
+- LocalBusiness schema? [Yes/No/Unable to determine]
+- Google Maps embed? [Yes/No]
+- Geo-modified keyword variants? [list any found]
+- Service area clearly stated? [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [specific local SEO fixes]
+
+---
+
+## ✍️ Content Analysis
+
+### Content Quality & Depth
+- Approximate word count: [range estimate]
+- Answers user search intent? [Yes/Partially/No]
+- E-E-A-T demonstrated? [how/how not]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [what to add, expand, or remove]
+
+### Content Structure & Readability
+- Bullet points, lists, short paragraphs? [Yes/No/Partial]
+- Scannable? [Yes/No]
+- Reading level appropriate? [note any issues]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [formatting improvements]
+
+### Value Proposition Clarity
+- Main offer immediately clear? [Yes/No]
+- Problem it claims to solve: [state what found or "Unclear"]
+- Differentiated from competitors? [Yes/No/Unclear]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [how to sharpen the value prop]
+
+### Trust & Credibility Signals
+Present / missing from: testimonials, case studies, certifications, years in business, guarantees
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [specific trust elements to add]
+
+---
+
+## 🎯 Conversion Analysis
+
+### Call to Action (CTA)
+- Primary CTA text: [exact text or "Not found"]
+- CTA placement: [above fold/below fold/multiple/absent]
+- Specific and benefit-driven? [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [rewritten CTA + placement advice]
+
+### Lead Capture / Forms
+- Form present? [Yes/No]
+- Number of fields: [N] (ideal for lead gen: 3–5)
+- Friction level: [Low/Medium/High]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [friction reduction]
+
+### Above the Fold Experience
+- Core value prop visible without scrolling? [Yes/No]
+- CTA above the fold? [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [above-fold improvements]
+
+### Urgency & Motivation
+- Urgency triggers present? [Yes/No + examples]
+- Motivation reinforcers near CTA? [Yes/No]
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [how to ethically add urgency]
+
+### User Journey & Friction
+- Path from arrival to conversion obvious? [Yes/No]
+- Confusing nav, competing CTAs, or distracting elements?
+- Assessment: [✅/⚠️/❌]
+- Recommendation: [friction reduction]
+
+---
+
+## 🏆 Competitive Context
+
+Based on a search for [keyword + region if provided]:
+- **Local pack presence** (if region given): [Google Maps 3-pack present? Client in it?]
+- Top 3 competing pages: [list with brief note on why they rank]
+- What the user's page does better (if anything)
+- What competitors do that this page should adopt
+- Key gap to close
+
+---
+
+## ⚡ Priority Action Plan
+
+| Priority | Action | Impact | Effort |
+|----------|--------|--------|--------|
+| 1 | [specific fix] | High/Med/Low | High/Med/Low |
+| 2 | ... | | |
+| 3 | ... | | |
+| 4 | ... | | |
+| 5 | ... | | |
+
+*Fix priorities 1–3 first for the fastest measurable gains.*
+
+---
+
+## 📋 Quick Wins (Do This Week)
+- [Change 1 — doable in under an hour]
+- [Change 2]
+- [Change 3]
+- [Change 4]
+- [Change 5]
+
+---
+*Report generated by Website Analyzer — Tall Town Design*`;
+
+async function runAnalysis() {
+  const url = document.getElementById('url-input').value.trim();
+  const keyword = document.getElementById('keyword-input').value.trim();
+  const region = document.getElementById('region-input').value.trim();
+  const errorBox = document.getElementById('error-box');
+  
+  errorBox.className = 'error-box';
+  errorBox.textContent = '';
+
+  if (!url) { showError('Please enter a website URL.'); return; }
+  if (!keyword) { showError('Please enter a focus keyword.'); return; }
+  if (!url.startsWith('http')) { showError('URL must start with http:// or https://'); return; }
+
+  setLoading(true);
+  document.getElementById('report-area').className = 'report-area';
+
+  const userMessage = `Please analyze this website:
+
+URL: ${url}
+Focus Keyword: ${keyword}
+${region ? `Geographic Region: ${region}` : 'Geographic Region: Not specified'}
+
+Use web_search to fetch the page content and search for competitors, then generate the full analysis report following your template exactly.`;
+
+  animateSteps();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system: SYSTEM_PROMPT,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || `API error ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    const textBlocks = data.content.filter(b => b.type === 'text').map(b => b.text);
+    const reportText = textBlocks.join('\n');
+
+    if (!reportText.trim()) throw new Error('No report was generated. Please try again.');
+
+    rawMarkdown = reportText;
+    renderReport(reportText);
+    document.getElementById('report-area').className = 'report-area visible';
+
+    if (url) {
+      const domain = new URL(url).hostname.replace('www.', '');
+      document.title = `Analysis — ${domain}`;
+    }
+
+  } catch (err) {
+    showError(err.message || 'Something went wrong. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function renderReport(md) {
+  const html = marked.parse(md, { breaks: true, gfm: true });
+  document.getElementById('report-content').innerHTML = html;
+  document.getElementById('report-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setLoading(on) {
+  document.getElementById('loading-state').className = on ? 'loading-state visible' : 'loading-state';
+  document.getElementById('analyze-btn').disabled = on;
+  document.getElementById('analyze-btn').textContent = on ? 'Analyzing...' : 'Analyze Website';
+  if (on) {
+    document.getElementById('analyze-btn').innerHTML = `<div style="width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite"></div> Analyzing…`;
+  } else {
+    document.getElementById('analyze-btn').innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Analyze Website`;
+  }
+}
+
+function showError(msg) {
+  const box = document.getElementById('error-box');
+  box.className = 'error-box visible';
+  box.textContent = msg;
+  setLoading(false);
+}
+
+let stepTimer;
+function animateSteps() {
+  const steps = ['step1','step2','step3'];
+  let i = 0;
+  steps.forEach(id => document.getElementById(id).className = 'step-item');
+  clearInterval(stepTimer);
+  stepTimer = setInterval(() => {
+    if (i > 0) document.getElementById(steps[i-1]).className = 'step-item done';
+    if (i < steps.length) {
+      document.getElementById(steps[i]).className = 'step-item active';
+      i++;
+    } else {
+      clearInterval(stepTimer);
+    }
+  }, 4000);
+}
+
+async function copyReport(btn) {
+  if (!rawMarkdown) return;
+  try {
+    await navigator.clipboard.writeText(rawMarkdown);
+    const original = btn.innerHTML;
+    btn.innerHTML = btn.innerHTML.replace(/Copy.*/, 'Copied!');
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.classList.remove('copied');
+    }, 2500);
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = rawMarkdown;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+}
+
+function downloadPDF() {
+  window.print();
+}
+
+document.getElementById('url-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('keyword-input').focus();
+});
+document.getElementById('keyword-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('region-input').focus();
+});
+document.getElementById('region-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') runAnalysis();
+});
+</script>
+</body>
+</html>
