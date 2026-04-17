@@ -6,13 +6,15 @@ exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
+    // Remove tools so Claude responds directly without web search
+    delete body.tools;
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-beta': 'web-search-2025-03-05'
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify(body)
     });

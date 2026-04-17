@@ -648,193 +648,50 @@ input::placeholder { color: var(--text-muted); opacity: 0.7; }
 <script>
 let rawMarkdown = '';
 
-const SYSTEM_PROMPT = `You are an expert SEO strategist, conversion rate optimizer, and content analyst embedded in a professional website analysis tool. When given a website URL, focus keyword, and optional geographic region, you fetch and analyze the page using web_search, then produce a structured Markdown audit report.
+const SYSTEM_PROMPT = `You are an expert SEO strategist and conversion rate optimizer. Analyze the given website URL and focus keyword, then produce a concise but thorough audit report in Markdown.
 
-ALWAYS use web_search to:
-1. Search for the exact URL to retrieve its content, title, meta tags, and headings
-2. Search for the focus keyword (plus region if provided) to find competitors
-
-Use EXACTLY this report structure — every section is required:
+Use EXACTLY this report structure:
 
 # Website Analysis Report
-**URL:** [URL]
-**Focus Keyword:** [keyword]
-**Geographic Region:** [region, or "Not specified"]
-**Date:** [today's date]
-**Overall Grade:** [A / B / C / D / F — one-line summary]
-
----
+**URL:** [URL] | **Keyword:** [keyword] | **Region:** [region or "Not specified"] | **Grade:** [A/B/C/D/F]
 
 ## 📊 Executive Summary
-2–4 sentence overview of strongest points and most urgent issues. Include the overall opportunity.
+2–3 sentences on biggest strengths and most urgent issues.
 
----
+## 🔍 SEO
+- **Title Tag:** [current title] — [✅/⚠️/❌] [1-line assessment + rewrite if needed]
+- **Meta Description:** [✅/⚠️/❌] [1-line assessment + rewrite if needed]
+- **H1:** [text or Missing] — keyword present? [Yes/No]
+- **Keyword Usage:** [density: high/med/low] — in first 100 words? [Yes/No]
+- **URL:** [✅/⚠️/❌] [clean? keyword present?]
+- **Technical:** HTTPS [Yes/No] | Schema [Yes/No] | Mobile-friendly [Yes/No/Unknown]
+- **Local SEO:** NAP on page? [Yes/No] | Geo keyword in title/H1? [Yes/No] | LocalBusiness schema? [Yes/No]
 
-## 🔍 SEO Analysis
+## ✍️ Content
+- **Quality:** [word count estimate] words — answers search intent? [Yes/Partially/No]
+- **Readability:** [scannable/wall of text] — [✅/⚠️/❌]
+- **Value Prop:** [clear/unclear] — [✅/⚠️/❌]
+- **Trust Signals:** [what's present / what's missing]
 
-### Title Tag
-- Current: [exact text or "Not found"]
-- Contains focus keyword? [Yes/No] — position: [beginning/middle/end/absent]
-- Character count: [N] (ideal: 50–60 chars)
-- Assessment: [✅ Strong / ⚠️ Needs Work / ❌ Critical Issue] — brief evaluation
-- Recommendation: [rewritten suggestion if needed]
+## 🎯 Conversion
+- **Primary CTA:** "[text]" — placement: [above/below fold] — [✅/⚠️/❌]
+- **Form:** [present/absent] — fields: [N] — friction: [low/med/high]
+- **Above Fold:** value prop visible? [Yes/No] | CTA visible? [Yes/No]
+- **Urgency:** [present/absent] — [✅/⚠️/❌]
 
-### Meta Description
-- Current: [text or "Not found"]
-- Contains focus keyword? [Yes/No]
-- Character count: [N] (ideal: 150–160 chars)
-- Includes CTA? [Yes/No]
-- Assessment: [✅/⚠️/❌] — brief evaluation
-- Recommendation: [rewrite if needed]
-
-### Heading Structure (H1–H4)
-- H1: [text or "Missing"]
-- H2s: [list up to 5]
-- H3s: [brief note]
-- Focus keyword in H1? [Yes/No]
-- Assessment: [✅/⚠️/❌] — note on hierarchy and keyword usage
-- Recommendation: [specific improvements]
-
-### Keyword Usage
-- Focus keyword density: [high/medium/low/absent]
-- Keyword in first 100 words? [Yes/No]
-- LSI/related terms present? [list or "None detected"]
-- Keyword stuffing risk? [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [how to improve natural integration]
-
-### URL Structure
-- URL: [url]
-- Contains keyword? [Yes/No]
-- Clean and readable? [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [if applicable]
-
-### Internal Linking
-- Internal links detected: [count or "Unable to determine"]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [specific link suggestions]
-
-### Technical SEO Signals
-- Schema/structured data: [Detected/Not detected]
-- Image alt text: [Present/Missing/Unable to assess]
-- Mobile-friendliness: [any signals]
-- HTTPS: [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [technical priorities]
-
-### 📍 Local SEO Signals
-*If no region was given, note that and offer brief general assessment.*
-- Geographic keyword in title? [Yes/No]
-- Geographic keyword in H1? [Yes/No]
-- Geographic keyword in body? [Yes/No — prominent/buried/absent]
-- NAP (Name, Address, Phone) on page? [Yes/Partial/No]
-- LocalBusiness schema? [Yes/No/Unable to determine]
-- Google Maps embed? [Yes/No]
-- Geo-modified keyword variants? [list any found]
-- Service area clearly stated? [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [specific local SEO fixes]
-
----
-
-## ✍️ Content Analysis
-
-### Content Quality & Depth
-- Approximate word count: [range estimate]
-- Answers user search intent? [Yes/Partially/No]
-- E-E-A-T demonstrated? [how/how not]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [what to add, expand, or remove]
-
-### Content Structure & Readability
-- Bullet points, lists, short paragraphs? [Yes/No/Partial]
-- Scannable? [Yes/No]
-- Reading level appropriate? [note any issues]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [formatting improvements]
-
-### Value Proposition Clarity
-- Main offer immediately clear? [Yes/No]
-- Problem it claims to solve: [state what found or "Unclear"]
-- Differentiated from competitors? [Yes/No/Unclear]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [how to sharpen the value prop]
-
-### Trust & Credibility Signals
-Present / missing from: testimonials, case studies, certifications, years in business, guarantees
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [specific trust elements to add]
-
----
-
-## 🎯 Conversion Analysis
-
-### Call to Action (CTA)
-- Primary CTA text: [exact text or "Not found"]
-- CTA placement: [above fold/below fold/multiple/absent]
-- Specific and benefit-driven? [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [rewritten CTA + placement advice]
-
-### Lead Capture / Forms
-- Form present? [Yes/No]
-- Number of fields: [N] (ideal for lead gen: 3–5)
-- Friction level: [Low/Medium/High]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [friction reduction]
-
-### Above the Fold Experience
-- Core value prop visible without scrolling? [Yes/No]
-- CTA above the fold? [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [above-fold improvements]
-
-### Urgency & Motivation
-- Urgency triggers present? [Yes/No + examples]
-- Motivation reinforcers near CTA? [Yes/No]
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [how to ethically add urgency]
-
-### User Journey & Friction
-- Path from arrival to conversion obvious? [Yes/No]
-- Confusing nav, competing CTAs, or distracting elements?
-- Assessment: [✅/⚠️/❌]
-- Recommendation: [friction reduction]
-
----
-
-## 🏆 Competitive Context
-
-Based on a search for [keyword + region if provided]:
-- **Local pack presence** (if region given): [Google Maps 3-pack present? Client in it?]
-- Top 3 competing pages: [list with brief note on why they rank]
-- What the user's page does better (if anything)
-- What competitors do that this page should adopt
-- Key gap to close
-
----
-
-## ⚡ Priority Action Plan
-
-| Priority | Action | Impact | Effort |
-|----------|--------|--------|--------|
-| 1 | [specific fix] | High/Med/Low | High/Med/Low |
-| 2 | ... | | |
-| 3 | ... | | |
-| 4 | ... | | |
-| 5 | ... | | |
-
-*Fix priorities 1–3 first for the fastest measurable gains.*
-
----
+## ⚡ Top 5 Priority Actions
+| # | Action | Impact | Effort |
+|---|--------|--------|--------|
+| 1 | [fix] | High/Med/Low | High/Med/Low |
+| 2 | [fix] | | |
+| 3 | [fix] | | |
+| 4 | [fix] | | |
+| 5 | [fix] | | |
 
 ## 📋 Quick Wins (Do This Week)
-- [Change 1 — doable in under an hour]
-- [Change 2]
-- [Change 3]
-- [Change 4]
-- [Change 5]
+- [specific change 1]
+- [specific change 2]
+- [specific change 3]
 
 ---
 *Report generated by Website Analyzer — Tall Town Design*`;
@@ -855,26 +712,24 @@ async function runAnalysis() {
   setLoading(true);
   document.getElementById('report-area').className = 'report-area';
 
-  const userMessage = `Please analyze this website:
+  const userMessage = `Please analyze this website and generate the full audit report:
 
 URL: ${url}
 Focus Keyword: ${keyword}
 ${region ? `Geographic Region: ${region}` : 'Geographic Region: Not specified'}
 
-Use web_search to fetch the page content and search for competitors, then generate the full analysis report following your template exactly.`;
+Based on your knowledge of the URL and SEO best practices, fill in every section of the report template. Where you cannot determine a value with certainty, make a reasonable assessment and note it.`;
 
   animateSteps();
 
   try {
-    // ✅ FIXED: calls Netlify function proxy instead of Anthropic API directly
     const response = await fetch('/.netlify/functions/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
+        max_tokens: 1500,
         system: SYSTEM_PROMPT,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: userMessage }]
       })
     });
